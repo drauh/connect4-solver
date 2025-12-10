@@ -103,6 +103,11 @@ impl BitBoard {
         return self.board == 0;
     }
 
+    // Number of stones represented by this bitboard.
+    pub fn count(self) -> u32 {
+        return self.board.count_ones();
+    }
+
     pub fn flip(mut self, col: u64, row: u64) -> BitBoard {
         self.board ^= 1 << (col * HOR_STRIDE + row * VER_STRIDE);
         return self;
@@ -114,7 +119,7 @@ impl BitBoard {
 
     // Returns true if more than 1 bit is set.
     pub fn more_than_1(self) -> bool {
-        return self.board & (self.board - 1) != 0;
+        return self.board & self.board.wrapping_sub(1) != 0;
     }
 
     // Moves returns a bitboard where position i is 1 if a stone can be placed there.

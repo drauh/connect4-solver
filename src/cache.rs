@@ -1,4 +1,4 @@
-use board::Board;
+use crate::board::Board;
 
 const CACHE_USED_BIT: u64 = 1 << 63; // Used on CacheBoard.first
 const CACHE_OUTCOME_BIT: u64 = 1 << 63; // Used on CacheBoard.second
@@ -27,11 +27,27 @@ pub fn board(board: Board) -> CacheBoard {
     };
 }
 
+// Similar to board(), but keeps all stones so ply depth remains exact.
+// Useful for scoring where distance-to-win matters.
+pub fn board_exact(board: Board) -> CacheBoard {
+    let (b1, b2) = board.canonical().raw();
+    CacheBoard {
+        first: b1 | CACHE_USED_BIT,
+        second: b2,
+    }
+}
+
 fn empty() -> CacheBoard {
     return CacheBoard {
         first: 0,
         second: 0,
     };
+}
+
+impl CacheBoard {
+    pub fn parts(self) -> (u64, u64) {
+        (self.first, self.second)
+    }
 }
 
 fn murmur(hash: u64) -> u64 {

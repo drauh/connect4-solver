@@ -1,7 +1,7 @@
 extern crate test;
 
-use bitboard;
-use bitboard::BitBoard;
+use crate::bitboard;
+use crate::bitboard::BitBoard;
 
 pub const FIRST_PLAYER: u64 = 0;
 pub const SECOND_PLAYER: u64 = 1;
@@ -43,6 +43,26 @@ impl Board {
 
     pub fn raw(self) -> (u64, u64) {
         return (self.current.raw(), self.other.raw());
+    }
+
+    pub fn count_current(self) -> u32 {
+        return self.current.count();
+    }
+
+    pub fn count_other(self) -> u32 {
+        return self.other.count();
+    }
+
+    pub fn total_stones(self) -> u32 {
+        return self.count_current() + self.count_other();
+    }
+
+    pub fn current_won(self) -> bool {
+        return self.current.won();
+    }
+
+    pub fn other_won(self) -> bool {
+        return self.other.won();
     }
 
     pub fn safe_moves(self, moves: BitBoard) -> BitBoard {

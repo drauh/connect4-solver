@@ -1,9 +1,9 @@
 #![feature(test)]
-// Nightly Rust is required because SIMD isn't stabilized yet.
 #![feature(portable_simd)]
 
-use connect4_rust::board::{self, Board};
+use connect4_rust::board;
 use connect4_rust::cache::{self, Cache};
+use connect4_rust::board::Board;
 
 const CACHE_DEPTH_SKIP: u64 = 2;
 const MOVE_ORDERING_MAX_DEPTH: u64 = 20;
@@ -28,10 +28,6 @@ impl<'cache> MinimaxState<'cache> {
 
         let moves = board.safe_moves(board.moves());
         if moves.empty() {
-            // Two possibilities:
-            // 1. The board is full, it follows that we're the first player.
-            //    We are testing if the first player can win the game, so return false.
-            // 2. There are no safe moves, we'll always lose, see safe_moves().
             return false;
         }
 
